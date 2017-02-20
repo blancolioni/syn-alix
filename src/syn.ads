@@ -104,7 +104,7 @@ package Syn is
 
    procedure Check (D : Declaration) is null;
 
-   procedure Set_Private_Spec (D : in out Declaration'Class);
+   procedure Set_Private_Spec (D : in out Declaration);
 
    function Has_Private_Part
      (Item : Declaration)
@@ -189,6 +189,7 @@ private
          Is_Abstract     : Boolean := False;
          Is_Limited      : Boolean := False;
          Is_Synchronized : Boolean := False;
+         Is_Private      : Boolean := False;
       end record;
 
    type Aspect is
