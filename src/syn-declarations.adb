@@ -1204,6 +1204,18 @@ package body Syn.Declarations is
       Item.Is_Private := True;
    end Set_Private;
 
+   ----------------------
+   -- Set_Private_Spec --
+   ----------------------
+
+   overriding procedure Set_Private_Spec
+     (Item : in out Type_Declaration)
+   is
+   begin
+      Item.Is_Private := True;
+      Item.Definition.Is_Private := True;
+   end Set_Private_Spec;
+
    -----------------------
    -- Single_Identifier --
    -----------------------
@@ -1780,9 +1792,13 @@ package body Syn.Declarations is
          Writer.Put (" is ");
          Writer.Optional_New_Line;
 
-         if Item.Is_Private
+         if False
+           and then Item.Is_Private
            and then Writer.Context = Package_Spec
          then
+            if Item.Definition.Is_Abstract then
+               Writer.Put ("abstract ");
+            end if;
             if Item.Definition.Is_Tagged then
                Writer.Put ("tagged ");
             end if;
@@ -1791,30 +1807,33 @@ package body Syn.Declarations is
             end if;
             Writer.Put ("private");
 
-            if not Item.Aspects.Is_Empty then
-               Writer.New_Line;
-               Writer.Put ("with ");
-               Writer.Indent (Writer.Indent + 5);
-               declare
-                  First : Boolean := True;
-               begin
-                  for A of Item.Aspects loop
-                     if First then
-                        First := False;
-                     else
-                        Writer.Put (",");
-                        Writer.New_Line;
-                     end if;
-                     Writer.Put (A.Name.all & " => ");
-                     A.Value.Write (Writer);
-                  end loop;
-               end;
-               Writer.Indent (Writer.Indent - 5);
-            end if;
-
          else
             Item.Definition.Write (Writer);
          end if;
+
+         if not Item.Aspects.Is_Empty
+           and then Writer.Context = Package_Spec
+         then
+            Writer.New_Line;
+            Writer.Put ("with ");
+            Writer.Indent (Writer.Indent + 5);
+            declare
+               First : Boolean := True;
+            begin
+               for A of Item.Aspects loop
+                  if First then
+                     First := False;
+                  else
+                     Writer.Put (",");
+                     Writer.New_Line;
+                  end if;
+                  Writer.Put (A.Name.all & " => ");
+                  A.Value.Write (Writer);
+               end loop;
+            end;
+            Writer.Indent (Writer.Indent - 5);
+         end if;
+
       end if;
    end Write;
 

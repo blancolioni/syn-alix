@@ -322,7 +322,7 @@ package body Syn is
    -- Set_Private_Spec --
    ----------------------
 
-   procedure Set_Private_Spec (D : in out Declaration'Class) is
+   procedure Set_Private_Spec (D : in out Declaration) is
    begin
       D.Private_Spec := True;
    end Set_Private_Spec;

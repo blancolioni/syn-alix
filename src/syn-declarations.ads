@@ -140,6 +140,9 @@ package Syn.Declarations is
      (Item : Type_Declaration)
      return Boolean;
 
+   overriding procedure Set_Private_Spec
+     (Item : in out Type_Declaration);
+
    overriding
    procedure Write (Item        : Type_Declaration;
                     Writer      : in out Writer_Interface'Class);

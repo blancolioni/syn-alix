@@ -267,7 +267,9 @@ package body Syn.Types is
          Writer.Indent (Writer.Indent + 3);
       end if;
 
-      if Item.Components.Is_Empty then
+      if Item.Is_Private and then Writer.Context = Package_Spec then
+         Writer.Put (" private");
+      elsif Item.Components.Is_Empty then
          Writer.Put (" null record");
          Writer.Indent (Writer.Indent - 3);
       else
