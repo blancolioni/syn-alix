@@ -468,6 +468,30 @@ package body Syn.Statements is
       end return;
    end New_Procedure_Call_Statement;
 
+   ----------------------------------
+   -- New_Procedure_Call_Statement --
+   ----------------------------------
+
+   function New_Procedure_Call_Statement
+     (Procedure_Name : String;
+      Argument_1     : Expression'Class;
+      Argument_2     : Expression'Class;
+      Argument_3     : Expression'Class;
+      Argument_4     : Expression'Class;
+      Argument_5     : Expression'Class)
+      return Procedure_Call_Statement
+   is
+   begin
+      return P : Procedure_Call_Statement do
+         P.Name := new String'(Procedure_Name);
+         P.Add_Actual_Argument (Argument_1);
+         P.Add_Actual_Argument (Argument_2);
+         P.Add_Actual_Argument (Argument_3);
+         P.Add_Actual_Argument (Argument_4);
+         P.Add_Actual_Argument (Argument_5);
+      end return;
+   end New_Procedure_Call_Statement;
+
    --------------------------
    -- New_Return_Statement --
    --------------------------

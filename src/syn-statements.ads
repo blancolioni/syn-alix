@@ -176,6 +176,15 @@ package Syn.Statements is
       Argument_4     : Expression'Class)
       return Procedure_Call_Statement;
 
+   function New_Procedure_Call_Statement
+     (Procedure_Name : String;
+      Argument_1     : Expression'Class;
+      Argument_2     : Expression'Class;
+      Argument_3     : Expression'Class;
+      Argument_4     : Expression'Class;
+      Argument_5     : Expression'Class)
+      return Procedure_Call_Statement;
+
    procedure Add_Actual_Argument
      (Call      : in out Procedure_Call_Statement;
       Name      : in     String;
