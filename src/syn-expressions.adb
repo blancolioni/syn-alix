@@ -179,6 +179,28 @@ package body Syn.Expressions is
 
    function New_Function_Call_Expression
      (Procedure_Name : String;
+      Argument_1     : Expression'Class;
+      Argument_2     : Expression'Class;
+      Argument_3     : Expression'Class;
+      Argument_4     : Expression'Class)
+      return Function_Call_Expression
+   is
+   begin
+      return F : Function_Call_Expression do
+         F.Name := new String'(Procedure_Name);
+         F.Add_Actual_Argument (Argument_1);
+         F.Add_Actual_Argument (Argument_2);
+         F.Add_Actual_Argument (Argument_3);
+         F.Add_Actual_Argument (Argument_4);
+      end return;
+   end New_Function_Call_Expression;
+
+   ----------------------------------
+   -- New_Function_Call_Expression --
+   ----------------------------------
+
+   function New_Function_Call_Expression
+     (Procedure_Name : String;
       Argument       : String)
       return Function_Call_Expression
    is

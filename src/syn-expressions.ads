@@ -66,6 +66,14 @@ package Syn.Expressions is
 
    function New_Function_Call_Expression
      (Procedure_Name : String;
+      Argument_1     : Expression'Class;
+      Argument_2     : Expression'Class;
+      Argument_3     : Expression'Class;
+      Argument_4     : Expression'Class)
+      return Function_Call_Expression;
+
+   function New_Function_Call_Expression
+     (Procedure_Name : String;
       Argument       : String)
       return Function_Call_Expression;
 
