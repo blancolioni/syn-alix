@@ -148,6 +148,11 @@ package Syn is
 
    type Expression is abstract new Syntax_Root with private;
 
+   function Constrained_Subtype
+     (Name      : String;
+      Low, High : Expression'Class)
+      return Subtype_Indication'Class;
+
    type Literal_Expression is new Expression with private;
 
    overriding
@@ -163,6 +168,11 @@ package Syn is
    function Object
      (Name         : String;
       Dereferenced : Boolean := False)
+      return Expression'Class;
+
+   function Constrained_Array
+     (Name         : String;
+      Low, High    : Expression'Class)
       return Expression'Class;
 
    procedure Add_Aspect
@@ -210,8 +220,11 @@ private
 
    type Subtype_Indication is new Syntax_Root with
       record
-         Base_Type  : String_Access;
-         Class_Wide : Boolean        := False;
+         Base_Type   : String_Access;
+         Class_Wide  : Boolean        := False;
+         Constrained : Boolean        := False;
+         Low         : access Expression'Class;
+         High        : access Expression'Class;
       end record;
 
    overriding
@@ -230,6 +243,7 @@ private
       record
          Literal      : String_Access;
          Dereferenced : Boolean := False;
+         Low, High    : access Expression'Class;
       end record;
 
    type Meta_Expression is abstract new Expression with null record;
