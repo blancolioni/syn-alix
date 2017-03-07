@@ -606,7 +606,7 @@ package body Syn.Statements is
       Writer : in out Writer_Interface'Class)
    is
    begin
-      Writer.Put (Item.Target.all);
+      Writer.Put (To_Ada_Name (Item.Target.all));
       Writer.Put (" := ");
       Writer.Optional_New_Line;
       Item.Expr.Write (Writer);
