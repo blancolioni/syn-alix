@@ -60,6 +60,40 @@ package body Syn is
       return Result;
    end Class_Wide_Subtype;
 
+   -----------------------
+   -- Constrained_Array --
+   -----------------------
+
+   function Constrained_Array
+     (Name         : String;
+      Low, High    : Expression'Class)
+      return Expression'Class
+   is
+      Result : constant Literal_Expression :=
+                 (new String'(Name), False,
+                  new Expression'Class'(Low),
+                  new Expression'Class'(High));
+   begin
+      return Result;
+   end Constrained_Array;
+
+   -------------------------
+   -- Constrained_Subtype --
+   -------------------------
+
+   function Constrained_Subtype
+     (Name      : String;
+      Low, High : Expression'Class)
+      return Subtype_Indication'Class
+   is
+      Result : constant Subtype_Indication :=
+                 (new String'(Name), False, True,
+                  new Expression'Class'(Low),
+                  new Expression'Class'(High));
+   begin
+      return Result;
+   end Constrained_Subtype;
+
    ------------------
    -- Current_Line --
    ------------------
@@ -449,6 +483,15 @@ package body Syn is
       if Item.Dereferenced then
          Writer.Put (".all");
       end if;
+      if Item.Low /= null and then Item.High /= null then
+         Writer.Put (" ");
+         Writer.Optional_New_Line;
+         Writer.Put ("(");
+         Item.Low.Write (Writer);
+         Writer.Put (" .. ");
+         Item.High.Write (Writer);
+         Writer.Put (")");
+      end if;
    end Write;
 
    -----------
@@ -463,6 +506,14 @@ package body Syn is
       Writer.Put (To_Ada_Name (Item.Base_Type));
       if Item.Class_Wide then
          Writer.Put ("'Class");
+      end if;
+      if Item.Constrained then
+         Writer.Optional_New_Line;
+         Writer.Put (" (");
+         Item.Low.Write (Writer);
+         Writer.Put (" .. ");
+         Item.High.Write (Writer);
+         Writer.Put (")");
       end if;
    end Write;
 
