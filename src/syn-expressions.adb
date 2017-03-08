@@ -305,6 +305,7 @@ package body Syn.Expressions is
             end if;
             Writer.Put (To_Ada_Name (Init.Name.all));
             Writer.Put (" => ");
+            Writer.Optional_New_Line;
             Init.Value.Write (Writer);
          end loop;
          Writer.Put (")");
