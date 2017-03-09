@@ -1288,7 +1288,8 @@ package body Syn.Declarations is
      (Item         : in out Package_Type;
       Withed       : in     String;
       Private_With : Boolean := False;
-      Body_With    : Boolean := False)
+      Body_With    : Boolean := False;
+      Use_Package  : Boolean := False)
    is
       New_With : With_Context_Clause;
    begin
@@ -1306,6 +1307,7 @@ package body Syn.Declarations is
       New_With.Withed_Package := new String'(To_Ada_Name (Withed));
       New_With.Is_Private     := Private_With;
       New_With.Is_Body        := Body_With;
+      New_With.Is_Used        := Use_Package;
       Item.Withed_Packages.Append (New_With);
    end With_Package;
 
@@ -1354,9 +1356,17 @@ package body Syn.Declarations is
                      if Context.Is_Private then
                         Writer.Put ("private ");
                      end if;
-                     Writer.Put_Line ("with " &
-                                        Context.Withed_Package.all &
-                                        ";");
+                     Writer.Put ("with " &
+                                   Context.Withed_Package.all &
+                                   ";");
+                     if Context.Is_Used then
+                        Writer.Set_Col (40);
+                        Writer.Optional_New_Line;
+                        Writer.Put ("use "
+                                    & Context.Withed_Package.all
+                                    & ";");
+                     end if;
+                     Writer.New_Line;
                      Got_With := True;
                   end if;
                end loop;
