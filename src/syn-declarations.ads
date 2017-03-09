@@ -400,7 +400,8 @@ package Syn.Declarations is
      (Item         : in out Package_Type;
       Withed       : in     String;
       Private_With : Boolean := False;
-      Body_With    : Boolean := False);
+      Body_With    : Boolean := False;
+      Use_Package  : Boolean := False);
 
    procedure Set_Private
      (Item : in out Package_Type);
@@ -493,6 +494,7 @@ private
          Withed_Package : String_Access;
          Is_Private     : Boolean        := False;
          Is_Body        : Boolean        := False;
+         Is_Used        : Boolean        := False;
          Elaborate_All  : Boolean        := False;
       end record;
 
