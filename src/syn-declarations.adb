@@ -1704,7 +1704,9 @@ package body Syn.Declarations is
       elsif Writer.Context = Package_Body
         or else Item.Is_Instantiation
       then
-         if Item.Arguments.Last_Index > 1 then
+         if Item.Arguments.Last_Index > 1
+           or else Item.Expression_Body /= null
+         then
             Writer.New_Line;
             Writer.Put ("is");
          else
@@ -1802,8 +1804,7 @@ package body Syn.Declarations is
          Writer.Put (" is ");
          Writer.Optional_New_Line;
 
-         if False
-           and then Item.Is_Private
+         if Item.Is_Private
            and then Writer.Context = Package_Spec
          then
             if Item.Definition.Is_Abstract then
@@ -1816,7 +1817,6 @@ package body Syn.Declarations is
                Writer.Put ("limited ");
             end if;
             Writer.Put ("private");
-
          else
             Item.Definition.Write (Writer);
          end if;
