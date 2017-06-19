@@ -1,5 +1,15 @@
 package body Syn.Types is
 
+   type Range_Type_Definition is
+     new Type_Definition with
+      record
+         Low, High : access String;
+      end record;
+
+   overriding procedure Write
+     (Item   : Range_Type_Definition;
+      Writer : in out Writer_Interface'Class);
+
    -------------------
    -- Add_Component --
    -------------------
@@ -116,8 +126,26 @@ package body Syn.Types is
      (Item : Record_Type_Definition) return Boolean
    is
    begin
-      return Item.Parents.Last_Index > 0;
+      return Item.Is_Tagged;
    end Is_Tagged;
+
+   --------------------------
+   -- New_Range_Definition --
+   --------------------------
+
+   function New_Range_Definition
+     (Low, High : String)
+      return Type_Definition'Class
+   is
+   begin
+      return Range_Type_Definition'
+        (Is_Abstract     => False,
+         Is_Limited      => False,
+         Is_Synchronized => False,
+         Is_Private      => False,
+         Low             => new String'(Low),
+         High            => new String'(High));
+   end New_Range_Definition;
 
    ----------------------
    -- Next_Case_Option --
@@ -351,6 +379,21 @@ package body Syn.Types is
          Writer.Put ("end record");
          Writer.Indent (Writer.Indent - 3);
       end if;
+   end Write;
+
+   -----------
+   -- Write --
+   -----------
+
+   overriding procedure Write
+     (Item   : Range_Type_Definition;
+      Writer : in out Writer_Interface'Class)
+   is
+   begin
+      Writer.Put ("range ");
+      Writer.Put (Item.Low.all);
+      Writer.Put (" .. ");
+      Writer.Put (Item.High.all);
    end Write;
 
 end Syn.Types;
