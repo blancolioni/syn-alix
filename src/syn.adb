@@ -302,7 +302,7 @@ package body Syn is
    is
    begin
       return Result : Literal_Expression do
-         Result.Literal := new String'(To_Ada_Name (Name));
+         Result.Literal := new String'(Name);
          Result.Dereferenced := Dereferenced;
       end return;
    end Object;
