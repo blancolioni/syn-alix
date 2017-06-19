@@ -2,6 +2,10 @@ with Ada.Containers.Doubly_Linked_Lists;
 
 package Syn.Types is
 
+   function New_Range_Definition
+     (Low, High : String)
+      return Type_Definition'Class;
+
    type Record_Type_Definition is
      new Interface_Type_Definition with private;
 
