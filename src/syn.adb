@@ -377,7 +377,11 @@ package body Syn is
          elsif Result (I) = '_'
            or else Result (I) = '.'
          then
-            Capital := True;
+            if I > Result'Last - 3
+              or else Result (I .. I + 3) /= ".all"
+            then
+               Capital := True;
+            end if;
          end if;
       end loop;
       return Result;
