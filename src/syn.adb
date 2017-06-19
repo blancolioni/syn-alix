@@ -412,6 +412,17 @@ package body Syn is
       return Result & (if Spec then ".ads" else ".adb");
    end To_File_Name;
 
+   -----------
+   -- Value --
+   -----------
+
+   function Value (Image : String) return Expression'Class is
+   begin
+      return Result : Literal_Expression do
+         Result.Literal := new String'(Image);
+      end return;
+   end Value;
+
    ---------------------
    -- Variant_Default --
    ---------------------

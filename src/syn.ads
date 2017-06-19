@@ -163,6 +163,8 @@ package Syn is
    function Literal (Value : String) return Expression'Class;
    function Literal (Value : Boolean) return Expression'Class;
 
+   function Value (Image : String) return Expression'Class;
+
    function Current_Line return Expression'Class;
 
    function Object
