@@ -1,9 +1,15 @@
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Syn.Declarations;
+
 package Syn.Types is
 
    function New_Range_Definition
      (Low, High : String)
+      return Type_Definition'Class;
+
+   function New_Subprogram_Type_Definition
+     (Signature : Syn.Declarations.Subprogram_Declaration'Class)
       return Type_Definition'Class;
 
    type Record_Type_Definition is

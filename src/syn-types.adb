@@ -10,6 +10,16 @@ package body Syn.Types is
      (Item   : Range_Type_Definition;
       Writer : in out Writer_Interface'Class);
 
+   type Subprogram_Type_Definition is
+     new Type_Definition with
+      record
+         Signature : access Syn.Declarations.Subprogram_Declaration'Class;
+      end record;
+
+   overriding procedure Write
+     (Item   : Subprogram_Type_Definition;
+      Writer : in out Writer_Interface'Class);
+
    -------------------
    -- Add_Component --
    -------------------
@@ -146,6 +156,28 @@ package body Syn.Types is
          Low             => new String'(Low),
          High            => new String'(High));
    end New_Range_Definition;
+
+   ------------------------------------
+   -- New_Subprogram_Type_Definition --
+   ------------------------------------
+
+   function New_Subprogram_Type_Definition
+     (Signature : Syn.Declarations.Subprogram_Declaration'Class)
+      return Type_Definition'Class
+   is
+      Result : constant Subprogram_Type_Definition :=
+                 Subprogram_Type_Definition'
+                   (Is_Abstract     => False,
+                    Is_Limited      => False,
+                    Is_Synchronized => False,
+                    Is_Private      => False,
+                    Signature       =>
+                       new Syn.Declarations.Subprogram_Declaration'Class'
+                      (Signature));
+   begin
+      Result.Signature.Set_Anonymous;
+      return Result;
+   end New_Subprogram_Type_Definition;
 
    ----------------------
    -- Next_Case_Option --
@@ -394,6 +426,21 @@ package body Syn.Types is
       Writer.Put (Item.Low.all);
       Writer.Put (" .. ");
       Writer.Put (Item.High.all);
+   end Write;
+
+   -----------
+   -- Write --
+   -----------
+
+   overriding procedure Write
+     (Item   : Subprogram_Type_Definition;
+      Writer : in out Writer_Interface'Class)
+   is
+   begin
+      Writer.Put_Line ("access");
+      Writer.Indent (Writer.Indent + 2);
+      Item.Signature.Write (Writer);
+      Writer.Indent (Writer.Indent - 2);
    end Write;
 
 end Syn.Types;
