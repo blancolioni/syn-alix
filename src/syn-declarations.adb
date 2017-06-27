@@ -1099,6 +1099,26 @@ package body Syn.Declarations is
    end New_Procedure;
 
    -------------------
+   -- New_Procedure --
+   -------------------
+
+   function New_Procedure
+     (Name        : String;
+      Argument_1  : Formal_Argument'Class;
+      Argument_2  : Formal_Argument'Class;
+      Block       : Blocks.Block_Type'Class)
+      return Subprogram_Declaration'Class
+   is
+   begin
+      return Proc : Subprogram_Declaration'Class :=
+        New_Procedure (Name, Block)
+      do
+         Proc.Add_Formal_Argument (Argument_1);
+         Proc.Add_Formal_Argument (Argument_2);
+      end return;
+   end New_Procedure;
+
+   -------------------
    -- New_Separator --
    -------------------
 
@@ -1158,6 +1178,15 @@ package body Syn.Declarations is
    begin
       Item.Is_Aliased := True;
    end Set_Aliased;
+
+   -------------------
+   -- Set_Anonymous --
+   -------------------
+
+   procedure Set_Anonymous (Item : in out Subprogram_Declaration'Class) is
+   begin
+      Item.Is_Anonymous := True;
+   end Set_Anonymous;
 
    ------------------
    -- Set_Constant --
@@ -1651,8 +1680,10 @@ package body Syn.Declarations is
          Writer.Put ("procedure");
       end if;
 
-      Writer.Put (" ");
-      Writer.Put (To_Ada_Name (Item.Name));
+      if not Item.Is_Anonymous then
+         Writer.Put (" ");
+         Writer.Put (To_Ada_Name (Item.Name));
+      end if;
 
       if Item.Arguments.Last_Index > 0 then
          if Item.Arguments.Last_Index = 1 then
@@ -1698,7 +1729,9 @@ package body Syn.Declarations is
          Item.Result_Type.Write (Writer);
       end if;
 
-      if Item.Is_Abstract then
+      if Item.Is_Anonymous then
+         null;
+      elsif Item.Is_Abstract then
          Writer.New_Line;
          Writer.Put ("   is abstract");
       elsif Writer.Context = Package_Body

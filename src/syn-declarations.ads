@@ -250,6 +250,9 @@ package Syn.Declarations is
    procedure Write (Item        : Subprogram_Declaration;
                     Writer      : in out Writer_Interface'Class);
 
+   function Is_Anonymous (Item : Subprogram_Declaration'Class) return Boolean;
+   procedure Set_Anonymous (Item : in out Subprogram_Declaration'Class);
+
    procedure Add_Local_Declaration
      (Subprogram : in out Subprogram_Declaration;
       Dec        : in     Declaration'Class);
@@ -324,6 +327,13 @@ package Syn.Declarations is
       Argument    : Formal_Argument'Class;
       Block       : Blocks.Block_Type'Class)
      return Subprogram_Declaration'Class;
+
+   function New_Procedure
+     (Name        : String;
+      Argument_1  : Formal_Argument'Class;
+      Argument_2  : Formal_Argument'Class;
+      Block       : Blocks.Block_Type'Class)
+      return Subprogram_Declaration'Class;
 
    function New_Procedure
      (Name        : String;
@@ -485,9 +495,13 @@ private
          Is_Private        : Boolean := False;
          Is_Overriding     : Boolean := False;
          Is_Instantiation  : Boolean := False;
+         Is_Anonymous      : Boolean := False;
          Arg_Name_Width    : Natural := 0;
          Has_Body          : Boolean := False;
       end record;
+
+   function Is_Anonymous (Item : Subprogram_Declaration'Class) return Boolean
+   is (Item.Is_Anonymous);
 
    type With_Context_Clause is
       record
