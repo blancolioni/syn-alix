@@ -288,6 +288,7 @@ package body Syn.Types is
          Component.Component_Type.Write (Writer);
          if Component.Component_Default /= null then
             Writer.Put (" := ");
+            Writer.Optional_New_Line;
             Component.Component_Default.Write (Writer);
          end if;
 
