@@ -60,6 +60,17 @@ package body Syn.Declarations is
       Is_Aliased              : Boolean := False)
      return Formal_Argument'Class;
 
+   type Address_Representation_Declaration is
+     new Declaration with
+      record
+         Object_Name  : access String;
+         Address_Expr : access Expression'Class;
+      end record;
+
+   overriding procedure Write
+     (Item        : Address_Representation_Declaration;
+      Writer      : in out Writer_Interface'Class);
+
    -------------------------
    -- Add_Formal_Argument --
    -------------------------
@@ -198,6 +209,22 @@ package body Syn.Declarations is
    begin
       Item.Append (New_Separator);
    end Add_Separator;
+
+   -----------------------------------
+   -- Address_Representation_Clause --
+   -----------------------------------
+
+   function Address_Representation_Clause
+     (Object_Name : String;
+      Address     : Expression'Class)
+      return Declaration'Class
+   is
+   begin
+      return Result : Address_Representation_Declaration do
+         Result.Object_Name := new String'(Object_Name);
+         Result.Address_Expr := new Expression'Class'(Address);
+      end return;
+   end Address_Representation_Clause;
 
    ------------
    -- Append --
@@ -1946,6 +1973,21 @@ package body Syn.Declarations is
       Writer.Put (" (");
       Writer.Put (Item.Pragma_Arg.all);
       Writer.Put (")");
+   end Write;
+
+   -----------
+   -- Write --
+   -----------
+
+   overriding procedure Write
+     (Item        : Address_Representation_Declaration;
+      Writer      : in out Writer_Interface'Class)
+   is
+   begin
+      Writer.Put ("for ");
+      Writer.Put (Item.Object_Name.all);
+      Writer.Put ("'Address use ");
+      Item.Address_Expr.Write (Writer);
    end Write;
 
 end Syn.Declarations;
