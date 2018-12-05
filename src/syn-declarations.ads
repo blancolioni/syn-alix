@@ -434,6 +434,11 @@ package Syn.Declarations is
      (Item : Package_Type)
      return Boolean;
 
+   function Address_Representation_Clause
+     (Object_Name : String;
+      Address     : Expression'Class)
+      return Declaration'Class;
+
 private
 
    type Specification_Separator is
