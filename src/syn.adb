@@ -307,6 +307,19 @@ package body Syn is
       end return;
    end Object;
 
+   --------------
+   -- Pop_Flag --
+   --------------
+
+   procedure Pop_Flag
+     (Writer : in out Writer_Interface'Class;
+      Flag   : Write_Flag)
+   is
+      pragma Unreferenced (Flag);
+   begin
+      Writer.Flag_Top := Writer.Flag_Top - 1;
+   end Pop_Flag;
+
    ------------------------
    -- Pseudo_Declaration --
    ------------------------
@@ -319,6 +332,20 @@ package body Syn is
    begin
       return False;
    end Pseudo_Declaration;
+
+   ---------------
+   -- Push_Flag --
+   ---------------
+
+   procedure Push_Flag
+     (Writer : in out Writer_Interface'Class;
+      Flag   : Write_Flag;
+      Value  : Boolean)
+   is
+   begin
+      Writer.Flag_Top := Writer.Flag_Top + 1;
+      Writer.Flags (Writer.Flag_Top) (Flag) := Value;
+   end Push_Flag;
 
    --------------
    -- Put_Line --
