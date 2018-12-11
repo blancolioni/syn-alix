@@ -1628,7 +1628,10 @@ package body Syn.Declarations is
             Writer.Optional_New_Line;
          end if;
 
-         if Item.Is_Argument then
+         if Item.Is_Argument
+           and then (not Writer.Is_Set (Suppress_Argument_Mode)
+                     or else Item.Mode /= In_Argument)
+         then
             case Item.Mode is
                when In_Argument =>
                   Writer.Put ("in     ");
@@ -1672,7 +1675,8 @@ package body Syn.Declarations is
    procedure Write (Item        : Subprogram_Declaration;
                     Writer      : in out Writer_Interface'Class)
    is
-      Arg_Start_Column : Natural;
+      Arg_Start_Column  : Natural;
+      Only_In_Arguments : Boolean := True;
    begin
       if (Writer.Context = Package_Private and then
             not Item.Private_Spec)
@@ -1712,6 +1716,16 @@ package body Syn.Declarations is
          Writer.Put (To_Ada_Name (Item.Name));
       end if;
 
+      for Arg of Item.Arguments loop
+         if Arg.Mode /= In_Argument then
+            Only_In_Arguments := False;
+         end if;
+      end loop;
+
+      if Only_In_Arguments then
+         Writer.Push_Flag (Suppress_Argument_Mode, True);
+      end if;
+
       if Item.Arguments.Last_Index > 0 then
          if Item.Arguments.Last_Index = 1 then
             Writer.Optional_New_Line;
@@ -1744,6 +1758,8 @@ package body Syn.Declarations is
             end;
          end if;
       end if;
+
+      Writer.Pop_Flag (Suppress_Argument_Mode);
 
       if Item.Is_Function then
          if Item.Arguments.Last_Index > 1 then
