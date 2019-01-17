@@ -1722,9 +1722,7 @@ package body Syn.Declarations is
          end if;
       end loop;
 
-      if Only_In_Arguments then
-         Writer.Push_Flag (Suppress_Argument_Mode, True);
-      end if;
+      Writer.Push_Flag (Suppress_Argument_Mode, Only_In_Arguments);
 
       if Item.Arguments.Last_Index > 0 then
          if Item.Arguments.Last_Index = 1 then
