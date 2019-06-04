@@ -39,6 +39,18 @@ package Syn.File_Writer is
    procedure Optional_New_Line
      (Writer : in out File_Writer);
 
+   function New_File_Count
+     (Writer : File_Writer)
+      return Natural;
+
+   function Updated_File_Count
+     (Writer : File_Writer)
+      return Natural;
+
+   function Skipped_File_Count
+     (Writer : File_Writer)
+      return Natural;
+
 private
 
    type File_Writer is
@@ -54,8 +66,26 @@ private
          Current_Line    : String (1 .. 200);
          Line_Length     : Natural                 := 0;
          Optional_NL     : Natural                 := 0;
+         Updated         : Natural := 0;
+         Created         : Natural := 0;
+         Skipped         : Natural := 0;
       end record;
 
    procedure Flush (Writer : in out File_Writer);
+
+   function New_File_Count
+     (Writer : File_Writer)
+      return Natural
+   is (Writer.Created);
+
+   function Updated_File_Count
+     (Writer : File_Writer)
+      return Natural
+   is (Writer.Updated);
+
+   function Skipped_File_Count
+     (Writer : File_Writer)
+      return Natural
+   is (Writer.Skipped);
 
 end Syn.File_Writer;
