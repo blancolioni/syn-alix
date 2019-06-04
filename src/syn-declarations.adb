@@ -1702,7 +1702,7 @@ package body Syn.Declarations is
       end if;
 
       if Item.Is_Overriding then
-         Writer.Put_Line ("overriding");
+         Writer.Put ("overriding ");
       end if;
 
       if Item.Is_Function then
