@@ -282,6 +282,7 @@ package body Syn.Types is
            (To_Ada_Name (Component.Component_Name.all));
          Writer.Set_Col (Colon_Indent);
          Writer.Put (": ");
+         Writer.Optional_New_Line;
          if Component.Component_Is_Access then
             Writer.Put ("access ");
          end if;
