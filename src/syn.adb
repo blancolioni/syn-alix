@@ -1,6 +1,8 @@
 with Ada.Characters.Handling;
 with Ada.Strings.Fixed;
 
+with Syn.Statements;
+
 package body Syn is
 
    Right_Margin : constant := 78;
@@ -45,6 +47,18 @@ package body Syn is
    begin
       To_Interface.Parents.Append (Name);
    end Add_Parent;
+
+   ------------
+   -- Append --
+   ------------
+
+   procedure Append (To : in out Statement_Sequencer'Class;
+                     S  : in     String)
+   is
+   begin
+      To.Append
+        (Syn.Statements.New_Procedure_Call_Statement (S));
+   end Append;
 
    ------------------------
    -- Class_Wide_Subtype --

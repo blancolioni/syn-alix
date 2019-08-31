@@ -154,6 +154,15 @@ package Syn is
                      Item         : in     Statement'Class)
    is abstract;
 
+   procedure Iterate
+     (Sequence : Statement_Sequencer;
+      Process  : not null access
+        procedure (S : Statement'Class))
+   is abstract;
+
+   procedure Append (To : in out Statement_Sequencer'Class;
+                     S  : in     String);
+
    type Subtype_Indication is tagged private;
 
    function Named_Subtype (Name : String)

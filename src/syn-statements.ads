@@ -11,9 +11,6 @@ package Syn.Statements is
    procedure Append (To : in out Sequence_Of_Statements;
                      S  : in     Statement'Class);
 
-   procedure Append (To : in out Sequence_Of_Statements;
-                     S  : in     String);
-
    overriding
    procedure Write (Item   : Sequence_Of_Statements;
                     Writer : in out Writer_Interface'Class);
@@ -207,6 +204,11 @@ private
       record
          Sequence : Statement_Vectors.Vector;
       end record;
+
+   overriding procedure Iterate
+     (Block   : Sequence_Of_Statements;
+      Process : not null access
+        procedure (S : Statement'Class));
 
    type Null_Statement is new Statement with null record;
 

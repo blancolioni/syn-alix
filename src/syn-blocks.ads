@@ -31,6 +31,10 @@ package Syn.Blocks is
      (Item : Statement'Class)
       return Block_Type'Class;
 
+   function Create_Block
+     (Item : Statement_Sequencer'Class)
+      return Block_Type'Class;
+
 private
 
    type Block_Type is
@@ -41,5 +45,10 @@ private
          Declarations : Declaration_Vectors.Vector;
          Statements   : Statement_Vectors.Vector;
       end record;
+
+   overriding procedure Iterate
+     (Block   : Block_Type;
+      Process : not null access
+        procedure (S : Statement'Class));
 
 end Syn.Blocks;

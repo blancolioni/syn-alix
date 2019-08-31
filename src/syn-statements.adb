@@ -217,17 +217,6 @@ package body Syn.Statements is
       To.Sequence.Append (S);
    end Append;
 
-   ------------
-   -- Append --
-   ------------
-
-   procedure Append (To : in out Sequence_Of_Statements;
-                     S  : in     String)
-   is
-   begin
-      To.Append (New_Procedure_Call_Statement (S));
-   end Append;
-
    --------------------
    -- Case_Statement --
    --------------------
@@ -343,6 +332,21 @@ package body Syn.Statements is
       False_Sequence.Append (False_Part);
       return If_Statement (Condition, True_Sequence, False_Sequence);
    end If_Statement;
+
+   -------------
+   -- Iterate --
+   -------------
+
+   overriding procedure Iterate
+     (Block   : Sequence_Of_Statements;
+      Process : not null access
+        procedure (S : Statement'Class))
+   is
+   begin
+      for S of Block.Sequence loop
+         Process (S);
+      end loop;
+   end Iterate;
 
    -------------
    -- Iterate --
