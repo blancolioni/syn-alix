@@ -1,3 +1,5 @@
+private with Ada.Strings.Unbounded;
+
 with Ada.Text_IO;
 
 package Syn.File_Writer is
@@ -56,8 +58,8 @@ private
    type File_Writer is
    limited new Writer_Interface with
       record
-         Path            : access String;
-         Temp_Path       : access String;
+         Path            : Ada.Strings.Unbounded.Unbounded_String;
+         Temp_Path       : Ada.Strings.Unbounded.Unbounded_String;
          Indent          : Natural := 0;
          First_On_Line   : Boolean := True;
          Have_Empty_Line : Boolean := False;

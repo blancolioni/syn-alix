@@ -6,6 +6,14 @@ package body Syn.File_Writer is
    Right_Margin : constant := 78;
    Next_Temporary : Integer := 0;
 
+   function "-" (Item : Ada.Strings.Unbounded.Unbounded_String)
+                 return String
+   is (Ada.Strings.Unbounded.To_String (Item));
+
+   function "+" (Item : String)
+                 return Ada.Strings.Unbounded.Unbounded_String
+   is (Ada.Strings.Unbounded.To_Unbounded_String (Item));
+
    function Temporary_File
      (Path : String)
       return String;
@@ -21,16 +29,18 @@ package body Syn.File_Writer is
 
    overriding
    procedure Close (Item : in out File_Writer) is
+      Item_Path : constant String := -Item.Path;
+      Temp_Path : constant String := -Item.Temp_Path;
    begin
       Item.Flush;
       Ada.Text_IO.Close (Item.File);
 
-      if Item.Path /= Item.Temp_Path then
-         if File_Changed (Item.Path.all, Item.Temp_Path.all) then
-            Ada.Directories.Delete_File (Item.Path.all);
-            Ada.Directories.Rename (Item.Temp_Path.all, Item.Path.all);
+      if Item_Path /= Temp_Path then
+         if File_Changed (Item_Path, Temp_Path) then
+            Ada.Directories.Delete_File (Item_Path);
+            Ada.Directories.Rename (Temp_Path, Item_Path);
          else
-            Ada.Directories.Delete_File (Item.Temp_Path.all);
+            Ada.Directories.Delete_File (Temp_Path);
          end if;
       end if;
    end Close;
@@ -55,13 +65,13 @@ package body Syn.File_Writer is
       Path : in     String)
    is
    begin
-      Item.Path := new String'(Path);
+      Item.Path := +Path;
       if Ada.Directories.Exists (Path) then
-         Item.Temp_Path := new String'(Temporary_File (Path));
+         Item.Temp_Path := +(Temporary_File (Path));
       else
          Item.Temp_Path := Item.Path;
       end if;
-      Ada.Text_IO.Create (Item.File, Ada.Text_IO.Out_File, Item.Temp_Path.all);
+      Ada.Text_IO.Create (Item.File, Ada.Text_IO.Out_File, -Item.Temp_Path);
       Item.Line_Length := 0;
       Item.Optional_NL := 0;
    end Create;
