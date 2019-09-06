@@ -112,6 +112,8 @@ package Syn.Statements is
    procedure Write (Item   : Null_Statement;
                     Writer : in out Writer_Interface'Class);
 
+   function New_Null_Statement return Null_Statement;
+
    function New_Return_Statement
       return Statement'Class;
 
@@ -211,6 +213,9 @@ private
         procedure (S : Statement'Class));
 
    type Null_Statement is new Statement with null record;
+
+   function New_Null_Statement return Null_Statement
+   is (others => <>);
 
    type Assignment_Statement is new Statement with
       record
