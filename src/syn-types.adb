@@ -305,11 +305,12 @@ package body Syn.Types is
          Writer.Put ("abstract ");
       end if;
 
-      if Item.Is_Limited then
-         Writer.Put ("limited ");
-      end if;
-
       if not Item.Parents.Is_Empty then
+
+         if Item.Is_Limited then
+            Writer.Put ("limited ");
+         end if;
+
          Writer.Indent (Writer.Indent + 2);
          for Parent_Name of Item.Parents loop
             if First_Parent then
@@ -326,6 +327,11 @@ package body Syn.Types is
          if Item.Is_Tagged then
             Writer.Put ("tagged");
          end if;
+
+         if Item.Is_Limited then
+            Writer.Put (" limited ");
+         end if;
+
          Writer.Indent (Writer.Indent + 3);
       end if;
 
