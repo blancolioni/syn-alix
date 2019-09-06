@@ -871,6 +871,28 @@ package body Syn.Declarations is
 
    function New_Function
      (Name        : String;
+      Argument_1  : Formal_Argument'Class;
+      Argument_2  : Formal_Argument'Class;
+      Result_Type : String;
+      Block       : Blocks.Block_Type'Class)
+      return Subprogram_Declaration'Class
+   is
+      Result : Subprogram_Declaration'Class :=
+        New_Function (Name,
+                      Named_Subtype (Result_Type),
+                      Block);
+   begin
+      Result.Add_Formal_Argument (Argument_1);
+      Result.Add_Formal_Argument (Argument_2);
+      return Result;
+   end New_Function;
+
+   ------------------
+   -- New_Function --
+   ------------------
+
+   function New_Function
+     (Name        : String;
       Result_Type : String;
       Result      : Expression'Class)
       return Subprogram_Declaration'Class
@@ -1270,6 +1292,7 @@ package body Syn.Declarations is
    begin
       Item.Is_Private := True;
       Item.Definition.Is_Private := True;
+      Item.Private_Spec := True;
    end Set_Private_Spec;
 
    -----------------------
@@ -1616,6 +1639,7 @@ package body Syn.Declarations is
          end if;
 
          Writer.Put (" : ");
+         Writer.Optional_New_Line;
 
          if Item.Is_Aliased then
             Writer.Put ("aliased ");
@@ -1852,7 +1876,7 @@ package body Syn.Declarations is
       Writer      : in out Writer_Interface'Class)
    is
    begin
-      if Writer.Context = Package_Spec
+      if (Writer.Context = Package_Spec and then not Item.Private_Spec)
         or else (Writer.Context = Package_Private and then
                    (Item.Has_Private_Part
                     or else Item.Private_Spec))

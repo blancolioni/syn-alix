@@ -322,6 +322,14 @@ package Syn.Declarations is
       Block       : Blocks.Block_Type'Class)
      return Subprogram_Declaration'Class;
 
+   function New_Function
+     (Name        : String;
+      Argument_1  : Formal_Argument'Class;
+      Argument_2  : Formal_Argument'Class;
+      Result_Type : String;
+      Block       : Blocks.Block_Type'Class)
+      return Subprogram_Declaration'Class;
+
    function New_Procedure
      (Name        : String;
       Argument    : Formal_Argument'Class;
