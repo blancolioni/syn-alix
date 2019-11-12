@@ -90,6 +90,19 @@ package body Syn.Types is
          False));
    end Add_Component;
 
+   ----------------
+   -- Add_Parent --
+   ----------------
+
+   overriding procedure Add_Parent
+     (Item : in out Record_Type_Definition;
+      Name : in     String)
+   is
+   begin
+      Item.Set_Tagged;
+      Interface_Type_Definition (Item).Add_Parent (Name);
+   end Add_Parent;
+
    -----------------
    -- Add_Variant --
    -----------------
@@ -149,12 +162,13 @@ package body Syn.Types is
    is
    begin
       return Range_Type_Definition'
-        (Is_Abstract     => False,
-         Is_Limited      => False,
-         Is_Synchronized => False,
-         Is_Private      => False,
-         Low             => new String'(Low),
-         High            => new String'(High));
+        (Is_Abstract        => False,
+         Is_Limited         => False,
+         Is_Synchronized    => False,
+         Is_Private         => False,
+         Visible_Derivation => False,
+         Low                => new String'(Low),
+         High               => new String'(High));
    end New_Range_Definition;
 
    ------------------------------------
@@ -166,14 +180,15 @@ package body Syn.Types is
       return Type_Definition'Class
    is
       Result : constant Subprogram_Type_Definition :=
-                 Subprogram_Type_Definition'
-                   (Is_Abstract     => False,
-                    Is_Limited      => False,
-                    Is_Synchronized => False,
-                    Is_Private      => False,
-                    Signature       =>
-                       new Syn.Declarations.Subprogram_Declaration'Class'
-                      (Signature));
+        Subprogram_Type_Definition'
+          (Is_Abstract        => False,
+           Is_Limited         => False,
+           Is_Synchronized    => False,
+           Is_Private         => False,
+           Visible_Derivation => False,
+           Signature          =>
+              new Syn.Declarations.Subprogram_Declaration'Class'
+             (Signature));
    begin
       Result.Signature.Set_Anonymous;
       return Result;
@@ -208,6 +223,17 @@ package body Syn.Types is
    begin
       Rec.Is_Tagged := True;
    end Set_Tagged;
+
+   ----------------------------
+   -- Set_Visible_Derivation --
+   ----------------------------
+
+   procedure Set_Visible_Derivation
+     (Rec : in out Record_Type_Definition'Class)
+   is
+   begin
+      Rec.Visible_Derivation := True;
+   end Set_Visible_Derivation;
 
    ----------------
    -- Start_Case --
@@ -335,8 +361,11 @@ package body Syn.Types is
          Writer.Indent (Writer.Indent + 3);
       end if;
 
-      if Item.Is_Private and then Writer.Context = Package_Spec then
+      if (Item.Is_Private or else Item.Visible_Derivation)
+        and then Writer.Context = Package_Spec
+      then
          Writer.Put (" private");
+         Writer.Indent (Writer.Indent - 3);
       elsif Item.Components.Is_Empty then
          Writer.Put (" null record");
          Writer.Indent (Writer.Indent - 3);

@@ -30,6 +30,10 @@ package Syn.Types is
    overriding
    function Is_Tagged (Item : Record_Type_Definition) return Boolean;
 
+   overriding procedure Add_Parent
+     (Item : in out Record_Type_Definition;
+      Name : in     String);
+
    procedure Add_Component
      (To_Record      : in out Record_Type_Definition'Class;
       Component_Name : in String;
@@ -68,6 +72,8 @@ package Syn.Types is
 
    procedure Set_Abstract (Rec : in out Record_Type_Definition'Class);
    procedure Set_Tagged (Rec : in out Record_Type_Definition'Class);
+   procedure Set_Visible_Derivation
+     (Rec : in out Record_Type_Definition'Class);
 
    overriding
    procedure Write (Item        : Record_Type_Definition;

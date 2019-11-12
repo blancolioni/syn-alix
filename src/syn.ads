@@ -77,6 +77,7 @@ package Syn is
    function Variant_Default (Item : Type_Definition) return String;
 
    function Is_Tagged (Item : Type_Definition) return Boolean;
+   function Visible_Derivation (Item : Type_Definition) return Boolean;
 
    type Enumeration_Type_Definition is
      new Type_Definition with private;
@@ -109,8 +110,9 @@ package Syn is
 
    type Interface_Type_Definition is new Type_Definition with private;
 
-   procedure Add_Parent (To_Interface : in out Interface_Type_Definition;
-                         Name         : in     String);
+   procedure Add_Parent
+     (To_Interface : in out Interface_Type_Definition;
+      Name         : in     String);
 
    overriding
    procedure Write (Item        : Interface_Type_Definition;
@@ -223,11 +225,15 @@ private
 
    type Type_Definition is abstract new Syntax_Root with
       record
-         Is_Abstract     : Boolean := False;
-         Is_Limited      : Boolean := False;
-         Is_Synchronized : Boolean := False;
-         Is_Private      : Boolean := False;
+         Is_Abstract        : Boolean := False;
+         Is_Limited         : Boolean := False;
+         Is_Synchronized    : Boolean := False;
+         Is_Private         : Boolean := False;
+         Visible_Derivation : Boolean := False;
       end record;
+
+   function Visible_Derivation (Item : Type_Definition) return Boolean
+   is (Item.Visible_Derivation);
 
    type Aspect is
       record

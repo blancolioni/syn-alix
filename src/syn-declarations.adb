@@ -1876,7 +1876,8 @@ package body Syn.Declarations is
       Writer      : in out Writer_Interface'Class)
    is
    begin
-      if (Writer.Context = Package_Spec and then not Item.Private_Spec)
+      if (Writer.Context = Package_Spec
+          and then not Item.Private_Spec)
         or else (Writer.Context = Package_Private and then
                    (Item.Has_Private_Part
                     or else Item.Private_Spec))
@@ -1902,8 +1903,9 @@ package body Syn.Declarations is
          Writer.Put (" is ");
          Writer.Optional_New_Line;
 
-         if Item.Is_Private
-           and then Writer.Context = Package_Spec
+         if (Item.Is_Private
+             and then Writer.Context = Package_Spec)
+           and then not Item.Definition.Visible_Derivation
          then
             if Item.Definition.Is_Abstract then
                Writer.Put ("abstract ");
