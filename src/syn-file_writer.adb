@@ -245,6 +245,25 @@ package body Syn.File_Writer is
          end;
       end if;
 
+      if Trimmed'Length > 0
+        and then Writer.Line_Length + Writer.Pending_Spaces + Trimmed'Length
+          >= Right_Margin
+        and then Ada.Strings.Fixed.Index (Trimmed, ".") > 0
+      then
+         for I in reverse Trimmed'Range loop
+            if Trimmed (I) = '.'
+              and then Writer.Line_Length + Writer.Pending_Spaces
+                + (I - Trimmed'First)
+              < Right_Margin
+            then
+               Writer.Put (Trimmed (Trimmed'First .. I - 1));
+               Writer.New_Line;
+               Writer.Put (Trimmed (I .. Trimmed'Last));
+               return;
+            end if;
+         end loop;
+      end if;
+
       if not Writer.First_On_Line
         and then Writer.Pending_Spaces > 0
       then
