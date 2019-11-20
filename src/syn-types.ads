@@ -38,13 +38,17 @@ package Syn.Types is
      (To_Record      : in out Record_Type_Definition'Class;
       Component_Name : in String;
       Component_Type : in Subtype_Indication'Class;
-      Is_Access      : in Boolean := False);
+      Is_Access      : in Boolean := False;
+      Is_Constant    : in Boolean := False)
+     with Pre => Is_Access or else not Is_Constant;
 
    procedure Add_Component
      (To_Record      : in out Record_Type_Definition'Class;
       Component_Name : in String;
       Component_Type : in String;
-      Is_Access      : in Boolean := False);
+      Is_Access      : in Boolean := False;
+      Is_Constant    : in Boolean := False)
+     with Pre => Is_Access or else not Is_Constant;
 
    procedure Add_Component
      (To_Record         : in out Record_Type_Definition'Class;
@@ -83,11 +87,12 @@ private
 
    type Record_Component is
       record
-         Component_Case_Value : access String;
-         Component_Name       : access String;
-         Component_Type       : access Subtype_Indication'Class;
-         Component_Default    : access Expression'Class;
-         Component_Is_Access  : Boolean;
+         Component_Case_Value  : access String;
+         Component_Name        : access String;
+         Component_Type        : access Subtype_Indication'Class;
+         Component_Default     : access Expression'Class;
+         Component_Is_Access   : Boolean;
+         Component_Is_Constant : Boolean;
       end record;
 
    package Record_Component_List is

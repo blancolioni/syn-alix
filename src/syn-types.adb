@@ -28,7 +28,8 @@ package body Syn.Types is
      (To_Record      : in out Record_Type_Definition'Class;
       Component_Name : in String;
       Component_Type : in Subtype_Indication'Class;
-      Is_Access      : in Boolean := False)
+      Is_Access      : in Boolean := False;
+      Is_Constant    : in Boolean := False)
    is
    begin
       To_Record.Components.Append
@@ -36,7 +37,7 @@ package body Syn.Types is
          new String'(Component_Name),
          new Subtype_Indication'Class'(Component_Type),
          null,
-         Is_Access));
+         Is_Access, Is_Constant));
    end Add_Component;
 
    -------------------
@@ -47,12 +48,14 @@ package body Syn.Types is
      (To_Record      : in out Record_Type_Definition'Class;
       Component_Name : in String;
       Component_Type : in String;
-      Is_Access      : in Boolean := False)
+      Is_Access      : in Boolean := False;
+      Is_Constant    : in Boolean := False)
    is
    begin
       Add_Component (To_Record, Component_Name,
                      Named_Subtype (Component_Type),
-                     Is_Access => Is_Access);
+                     Is_Access => Is_Access,
+                     Is_Constant => Is_Constant);
    end Add_Component;
 
    -------------------
@@ -87,7 +90,7 @@ package body Syn.Types is
          new String'(Component_Name),
          new Subtype_Indication'Class'(Component_Type),
          new Expression'Class'(Component_Default),
-         False));
+         False, False));
    end Add_Component;
 
    ----------------
