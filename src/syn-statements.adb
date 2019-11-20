@@ -366,6 +366,22 @@ package body Syn.Statements is
       end return;
    end Iterate;
 
+   -------------
+   -- Iterate --
+   -------------
+
+   function Iterate
+     (Loop_Variable  : String;
+      Container_Name : String;
+      Iterate_Body   : Statement'Class)
+      return Statement'Class
+   is
+      Seq : Sequence_Of_Statements;
+   begin
+      Seq.Append (Iterate_Body);
+      return Iterate (Loop_Variable, Container_Name, Seq);
+   end Iterate;
+
    ------------------------------
    -- New_Assignment_Statement --
    ------------------------------
