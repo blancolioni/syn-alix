@@ -345,6 +345,14 @@ package Syn.Declarations is
 
    function New_Procedure
      (Name        : String;
+      Argument_1  : Formal_Argument'Class;
+      Argument_2  : Formal_Argument'Class;
+      Argument_3  : Formal_Argument'Class;
+      Block       : Blocks.Block_Type'Class)
+      return Subprogram_Declaration'Class;
+
+   function New_Procedure
+     (Name        : String;
       Block       : Blocks.Block_Type'Class)
      return Subprogram_Declaration'Class;
 

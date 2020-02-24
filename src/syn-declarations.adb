@@ -1167,6 +1167,24 @@ package body Syn.Declarations is
       end return;
    end New_Procedure;
 
+   function New_Procedure
+     (Name        : String;
+      Argument_1  : Formal_Argument'Class;
+      Argument_2  : Formal_Argument'Class;
+      Argument_3  : Formal_Argument'Class;
+      Block       : Blocks.Block_Type'Class)
+      return Subprogram_Declaration'Class
+   is
+   begin
+      return Proc : Subprogram_Declaration'Class :=
+        New_Procedure (Name, Block)
+      do
+         Proc.Add_Formal_Argument (Argument_1);
+         Proc.Add_Formal_Argument (Argument_2);
+         Proc.Add_Formal_Argument (Argument_3);
+      end return;
+   end New_Procedure;
+
    -------------------
    -- New_Separator --
    -------------------
