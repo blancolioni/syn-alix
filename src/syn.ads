@@ -1,5 +1,6 @@
 private with Ada.Containers.Doubly_Linked_Lists;
 private with Ada.Containers.Indefinite_Vectors;
+private with Ada.Strings.Unbounded;
 
 package Syn is
 
@@ -165,6 +166,11 @@ package Syn is
    procedure Append (To : in out Statement_Sequencer'Class;
                      S  : in     String);
 
+   procedure Append_Pragma
+     (To       : in out Statement_Sequencer'Class;
+      Name     : String;
+      Argument : String);
+
    type Subtype_Indication is tagged private;
 
    function Named_Subtype (Name : String)
@@ -215,6 +221,12 @@ package Syn is
       Value : in String);
 
 private
+
+   function "+" (S : String) return Ada.Strings.Unbounded.Unbounded_String
+                 renames Ada.Strings.Unbounded.To_Unbounded_String;
+
+   function "-" (S : Ada.Strings.Unbounded.Unbounded_String) return String
+                 renames Ada.Strings.Unbounded.To_String;
 
    type String_Access is access String;
 

@@ -15,6 +15,11 @@ package Syn.Statements is
    procedure Write (Item   : Sequence_Of_Statements;
                     Writer : in out Writer_Interface'Class);
 
+   function Pragma_Statement
+     (Pragma_Name : String;
+      Argument    : String)
+      return Statement'Class;
+
    function Declare_Statement
      (Block : Syn.Blocks.Block_Type'Class)
       return Statement'Class;

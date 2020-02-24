@@ -60,6 +60,19 @@ package body Syn is
         (Syn.Statements.New_Procedure_Call_Statement (S));
    end Append;
 
+   -------------------
+   -- Append_Pragma --
+   -------------------
+
+   procedure Append_Pragma
+     (To       : in out Statement_Sequencer'Class;
+      Name     : String;
+      Argument : String)
+   is
+   begin
+      To.Append (Syn.Statements.Pragma_Statement (Name, Argument));
+   end Append_Pragma;
+
    ------------------------
    -- Class_Wide_Subtype --
    ------------------------

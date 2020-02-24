@@ -1,4 +1,17 @@
+with Ada.Strings.Unbounded;
+
 package body Syn.Statements is
+
+   type Pragma_Statement_Record is
+     new Statement with
+      record
+         Pragma_Name : Ada.Strings.Unbounded.Unbounded_String;
+         Pragma_Arg  : Ada.Strings.Unbounded.Unbounded_String;
+      end record;
+
+   overriding procedure Write
+     (Item        : Pragma_Statement_Record;
+      Writer      : in out Writer_Interface'Class);
 
    type Loop_Statement_Record is
      new Statement with
@@ -558,6 +571,23 @@ package body Syn.Statements is
       end return;
    end New_Return_Statement;
 
+   ----------------------
+   -- Pragma_Statement --
+   ----------------------
+
+   function Pragma_Statement
+     (Pragma_Name : String;
+      Argument    : String)
+      return Statement'Class
+   is
+   begin
+      return P : constant Pragma_Statement_Record :=
+        Pragma_Statement_Record'
+          (Label       => null,
+           Pragma_Name => +Pragma_Name,
+           Pragma_Arg  => +Argument);
+   end Pragma_Statement;
+
    ---------------------
    -- Raise_Statement --
    ---------------------
@@ -906,6 +936,22 @@ package body Syn.Statements is
       Writer.Put ("for " & Item.Loop_Variable.all & " of "
                   & Item.Container_Name.all & " ");
       Loop_Statement_Record (Item).Write (Writer);
+   end Write;
+
+   -----------
+   -- Write --
+   -----------
+
+   overriding procedure Write
+     (Item        : Pragma_Statement_Record;
+      Writer      : in out Writer_Interface'Class)
+   is
+   begin
+      Writer.Put ("pragma ");
+      Writer.Put (-Item.Pragma_Name);
+      Writer.Put (" (");
+      Writer.Put (-Item.Pragma_Arg);
+      Writer.Put (")");
    end Write;
 
 end Syn.Statements;
