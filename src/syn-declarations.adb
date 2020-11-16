@@ -1806,6 +1806,7 @@ package body Syn.Declarations is
             Writer.New_Line;
             Writer.Set_Col (Arg_Start_Column + 2);
          else
+            Writer.Optional_New_Line;
             Writer.Put (" ");
          end if;
          Writer.Put ("return ");
