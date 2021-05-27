@@ -153,8 +153,9 @@ package body Syn.Statements is
    is
    begin
       Statement.Case_Options.Append
-        ((new Expression'Class'(Object (Value)),
-         Sequence_Of_Statements (Stats)));
+        (Case_Option'
+           (new Expression'Class'(Object (Value)),
+            Sequence_Of_Statements (Stats)));
    end Add_Case_Option;
 
    ---------------------
@@ -185,8 +186,9 @@ package body Syn.Statements is
    begin
       Sequence.Append (Elsif_Statement);
       To_Statement.Elsifs.Append
-        ((new Expression'Class'(Condition),
-         Sequence));
+        (Elsif_Option'
+           (new Expression'Class'(Condition),
+            Sequence));
    end Add_Elsif;
 
    ---------------
@@ -200,8 +202,9 @@ package body Syn.Statements is
    is
    begin
       To_Statement.Elsifs.Append
-        ((new Expression'Class'(Condition),
-         Elsif_Statements));
+        (Elsif_Option'
+           (new Expression'Class'(Condition),
+            Elsif_Statements));
    end Add_Elsif;
 
    -----------------------
@@ -214,8 +217,9 @@ package body Syn.Statements is
    is
    begin
       Statement.Case_Options.Append
-        ((null,
-         Sequence_Of_Statements (Stats)));
+        (Case_Option'
+           (null,
+            Sequence_Of_Statements (Stats)));
    end Add_Others_Option;
 
    ------------
